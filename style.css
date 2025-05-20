@@ -20,11 +20,16 @@ body, input, button {
   background: transparent;
 }
 
+#worry-form{
+    height: 5vh;
+}
+
+
 /* Make the input wrap text and look calm */
 #worry-input {
-  width: 300px;
-  min-height: 30px;
-  padding: 5px;
+  width: 40vw;
+  min-height: 20px;
+  padding: 1%;
   font-size: 15px;
   border-radius: 8px;
   border: 1.5px solid #ccc;
@@ -43,21 +48,23 @@ body, input, button {
 }
 
 #worry-submit {
-  margin-left: 12px;
-  padding: 12px 24px;
-  font-size: 18px;
+  width: fit-content;
+  height: fit-content;
+  /* margin-left: 2vw; */
+  /* padding: 2vw 2vw; */
+  font-size: 12px;
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.6);
   background: linear-gradient(145deg, #4a4a6a, #2c2c48);
   color: #e0d7ff;
   cursor: pointer;
-  box-shadow:
+  /* box-shadow:
     0 0 8px 2px rgba(224, 215, 255, 0.7),
-    0 0 15px 5px rgba(200, 180, 255, 0.5);
+    0 0 15px 5px rgba(200, 180, 255, 0.5); */
   transition: all 0.3s ease;
-  animation: buttonTwinkle 3s ease-in-out infinite alternate;
+  /* animation: buttonTwinkle 3s ease-in-out infinite alternate; */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-shadow: 0 0 8px rgba(224, 215, 255, 0.8);
+  /* text-shadow: 0 0 8px rgba(224, 215, 255, 0.8); */
 }
 
 /* Gentle twinkle glow */
@@ -120,8 +127,6 @@ button {
     height: 100vh;
     overflow: hidden;
     background: linear-gradient(180deg, #3b2e5a, #524e7b, #2c5364, #0f2027);
-
-
 }
 
 .star {
@@ -137,8 +142,14 @@ button {
 }
 
 @keyframes twinkle {
-    0%, 100% { opacity: 0.45; }
-    50% { opacity: 2; }
+    0%, 100% { 
+        opacity: 0.45; 
+    }
+    50% { 
+        opacity: 2; 
+        width: 2.5px;
+        height: 2.5px;
+    }
 }
 
 

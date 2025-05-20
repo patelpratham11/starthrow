@@ -2,110 +2,104 @@ const form = document.getElementById('worry-form');
 const input = document.getElementById('worry-input');
 const container = document.getElementById('stars-container');
 
+// ✨ Add twinkling stars all over screen
+function generateStars() {
+  const numStars = 150;
+  container.innerHTML = ''; // clear existing
+
+  for (let i = 0; i < numStars; i++) {
+    const star = document.createElement('div');
+    star.classList.add('star');
+
+    const x = Math.random() * 100; // % of container width
+    const y = Math.random() * 50;  // % of container height (top half)
+
+    star.style.left = `${x}%`;
+    star.style.top = `${y}%`;
+
+    star.style.animationDuration = `${2 + Math.random() * 3}s`;
+    star.style.animationDelay = `${Math.random() * 3}s`;
+
+    container.appendChild(star);
+  }
+}
+
+generateStars();
+window.addEventListener('resize', generateStars); // redraw on resize
+
+// ✨ Launching worry sentences
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const fullText = input.value.trim();
   if (!fullText) return;
-
   input.value = '';
 
-  // Step 1: Create and animate the full sentence
   const fullSentence = document.createElement('div');
   fullSentence.className = 'shooting-star';
   fullSentence.textContent = fullText;
 
   const words = fullText.split(/\s+/);
-
   const startY = Math.random() * 60 + 20;
+
   fullSentence.style.top = `${startY}%`;
-  fullSentence.style.left = '0';
+  fullSentence.style.left = '0%';
 
-  // Random fly-out direction: constrained left-to-right and mild upward
-  const distanceX = Math.random() * 200 + 250;   // 250px to 450px → always rightward
-  const distanceY = -(Math.random() * 80);       // 0 to -80px → gentle upward slope
-  const rotate = Math.random() * 40 - 20;        // -20° to +20° tilt
+  const distanceX = Math.random() * 5 + 10; // 10vw to 15vw
+  const distanceY = -(Math.random() * 35);     // 0% to -8%
+  const rotate = Math.random() * 40 - 20;
 
-  fullSentence.style.setProperty('--translateX', `${distanceX}px`);
-  fullSentence.style.setProperty('--translateY', `${distanceY}px`);
+  fullSentence.style.setProperty('--translateX', `${distanceX}vw`);
+  fullSentence.style.setProperty('--translateY', `${distanceY}vh`);
   fullSentence.style.setProperty('--rotate', `${rotate}deg`);
-  
 
   container.appendChild(fullSentence);
 
-  // If more than 2 words, break apart after animation
   if (words.length > 2) {
     fullSentence.style.animation = 'flyAcross 1s ease-out forwards';
 
     setTimeout(() => {
-        const sentenceRect = fullSentence.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
+      const rect = fullSentence.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
 
-        // Use center instead of left edge
-        const spawnLeft = (sentenceRect.left - containerRect.left) + sentenceRect.width / 2;
-        const spawnTop = (sentenceRect.top - containerRect.top) + sentenceRect.height / 2;
+      const spawnLeftPercent = ((rect.left - containerRect.left) + rect.width / 2) / container.offsetWidth * 100;
+      const spawnTopPercent = ((rect.top - containerRect.top) + rect.height / 2) / container.offsetHeight * 100;
+      const clampedLeft = Math.min(Math.max(spawnLeftPercent, 10), 90); // limit to 10%–90%
 
-        fullSentence.remove();
+      fullSentence.remove();
 
-        words.forEach((chunk, index) => {
-            setTimeout(() => {
-            createShootingStar(chunk, spawnLeft, spawnTop);
-            }, index);
-        });
+      words.forEach((chunk, index) => {
+        setTimeout(() => {
+          createShootingStar(chunk, clampedLeft, spawnTopPercent);
+        }, index * 50);
+      });
     }, 1000);
   } else {
     fullSentence.style.animation = 'flyCustom 2s ease-out forwards';
-    // If 2 words or fewer, just remove after animation without chunking
-    setTimeout(() => {
-      fullSentence.remove();
-    }, 1000);
+    setTimeout(() => fullSentence.remove(), 1000);
   }
 });
 
-function createShootingStar(text, left, top) {
+// ✨ Break into word-stars
+function createShootingStar(text, leftPercent, topPercent) {
   const star = document.createElement('div');
   star.className = 'shooting-star';
   star.textContent = text;
 
-  // Start at position where full sentence ended
   star.style.position = 'absolute';
-  star.style.left = `${left}px`;
-  star.style.top = `${top}px`;
+  star.style.left = `${leftPercent}%`;
+  star.style.top = `${topPercent}%`;
 
-  // Random fly-out direction
-  const distanceX = Math.random() * 600 - 300; // -300 to +300 px
-  const distanceY = -(Math.random() * 300 + 100); // upward -100 to -400 px
+  const distanceX = Math.random() * 60 - 30; // -30vw to +30vw
+  const distanceY = -(Math.random() * 30 + 10); // -10vh to -40vh
   const rotate = Math.random() * 60 - 30;
 
-  star.style.setProperty('--translateX', `${distanceX}px`);
-  star.style.setProperty('--translateY', `${distanceY}px`);
+  star.style.setProperty('--translateX', `${distanceX}vw`);
+  star.style.setProperty('--translateY', `${distanceY}vh`);
   star.style.setProperty('--rotate', `${rotate}deg`);
-  star.style.animation = 'flyCustom 1.8s ease-out forwards';
 
+  star.style.animation = 'flyCustom 1.8s ease-out forwards';
   container.appendChild(star);
 
-  setTimeout(() => {
-    star.remove();
-  }, 2000);
-}
-
-const starContainer = document.getElementById('stars-container');
-const numStars = 150; // how many stars you want
-
-for (let i = 0; i < numStars; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-
-    // Random position: X across full width, Y in top half (0% to 50% of viewport height)
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * (window.innerHeight / 2);
-
-    star.style.left = `${x}px`;
-    star.style.top = `${y}px`;
-
-    // Optional: randomize animation duration and delay for more natural twinkle
-    star.style.animationDuration = `${2 + Math.random() * 3}s`;
-    star.style.animationDelay = `${Math.random() * 3}s`;
-
-    starContainer.appendChild(star);
+  setTimeout(() => star.remove(), 2000);
 }
