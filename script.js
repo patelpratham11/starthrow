@@ -80,6 +80,8 @@ form.addEventListener('submit', (e) => {
   const fullText = input.value.trim();
   if (!fullText) return;
   input.value = '';
+  input.blur();
+
 
   const fullSentence = document.createElement('div');
   fullSentence.className = 'shooting-star';
