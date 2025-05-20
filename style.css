@@ -1,4 +1,3 @@
-/* style.css */
 body, html {
   margin: 0;
   padding: 0;
@@ -13,7 +12,6 @@ body, html {
   position: relative;
 }
 
-/* Calming font - smooth and easy on eyes */
 body, input, button {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #eee;
@@ -25,7 +23,6 @@ body, input, button {
 }
 
 
-/* Make the input wrap text and look calm */
 #worry-input {
   width: 40vw;
   min-height: 20px;
@@ -37,7 +34,7 @@ body, input, button {
   color: #eee;
   resize: vertical;
   overflow-wrap:break-word;
-  white-space: pre-wrap; /* allows wrapping and preserves line breaks */
+  white-space: pre-wrap;
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.2);
   transition: box-shadow 0.3s ease;
 }
@@ -50,24 +47,16 @@ body, input, button {
 #worry-submit {
   width: fit-content;
   height: fit-content;
-  /* margin-left: 2vw; */
-  /* padding: 2vw 2vw; */
   font-size: 12px;
   border-radius: 12px;
   border: 2px solid rgba(255, 255, 255, 0.6);
   background: linear-gradient(145deg, #4a4a6a, #2c2c48);
   color: #e0d7ff;
   cursor: pointer;
-  /* box-shadow:
-    0 0 8px 2px rgba(224, 215, 255, 0.7),
-    0 0 15px 5px rgba(200, 180, 255, 0.5); */
   transition: all 0.3s ease;
-  /* animation: buttonTwinkle 3s ease-in-out infinite alternate; */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* text-shadow: 0 0 8px rgba(224, 215, 255, 0.8); */
 }
 
-/* Gentle twinkle glow */
 @keyframes buttonTwinkle {
   0%, 100% {
     box-shadow:
@@ -140,6 +129,14 @@ button {
     pointer-events: none;
     filter: drop-shadow(0 0 2px #fff);
 }
+
+#stars-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: -1;
+      display: block;
+    }
 
 @keyframes twinkle {
     0%, 100% { 

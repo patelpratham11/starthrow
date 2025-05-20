@@ -7,13 +7,18 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    
+
   <div class="sky">
     <form id="worry-form">
       <input type="text" id="worry-input" placeholder="Type your worry here..." required />
       <button id="worry-submit" type="submit">✈️</button>
     </form>
-    <div id="stars-container"></div>
-    
+
+    <div id="stars-container">
+  <canvas id="starfield"></canvas>
+  <!-- shooting-star divs will be appended here -->
+</div>
   </div>
 
   <script src="script.js"></script>

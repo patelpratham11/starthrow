@@ -2,30 +2,76 @@ const form = document.getElementById('worry-form');
 const input = document.getElementById('worry-input');
 const container = document.getElementById('stars-container');
 
-// ✨ Add twinkling stars all over screen
-function generateStars() {
-  const numStars = 150;
-  container.innerHTML = ''; // clear existing
+// // ✨ Add twinkling stars all over screen
+// function generateStars() {
+//   const numStars = 150;
+//   container.innerHTML = ''; // clear existing
 
-  for (let i = 0; i < numStars; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
+//   for (let i = 0; i < numStars; i++) {
+//     const star = document.createElement('div');
+//     star.classList.add('star');
 
-    const x = Math.random() * 100; // % of container width
-    const y = Math.random() * 50;  // % of container height (top half)
+//     const x = Math.random() * 100; // % of container width
+//     const y = Math.random() * 50;  // % of container height (top half)
 
-    star.style.left = `${x}%`;
-    star.style.top = `${y}%`;
+//     star.style.left = `${x}%`;
+//     star.style.top = `${y}%`;
 
-    star.style.animationDuration = `${2 + Math.random() * 3}s`;
-    star.style.animationDelay = `${Math.random() * 3}s`;
+//     star.style.animationDuration = `${2 + Math.random() * 3}s`;
+//     star.style.animationDelay = `${Math.random() * 3}s`;
 
-    container.appendChild(star);
+//     container.appendChild(star);
+//   }
+// }
+
+// generateStars();
+// window.addEventListener('resize', generateStars); // redraw on resize
+
+const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
-}
+  resize();
+  window.addEventListener('resize', resize);
 
-generateStars();
-window.addEventListener('resize', generateStars); // redraw on resize
+  const stars = [];
+  const numStars = 150;
+
+  // Initialize stars with random position and flicker params
+  for (let i = 0; i < numStars; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height / 2, // stars in top half
+      radius: Math.random() * 1.5 + 0.5,
+      flicker: Math.random() * 0.01 + 0.002,
+      alpha: Math.random(),
+      direction: Math.random() > 0.5 ? 1 : -1,
+    });
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => {
+      // Flicker animation
+      star.alpha += star.flicker * star.direction;
+      if (star.alpha <= 0.2 || star.alpha >= 1) star.direction *= -1;
+
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha.toFixed(2)})`;
+      ctx.shadowColor = `rgba(255, 255, 255, ${star.alpha.toFixed(2)})`;
+      ctx.shadowBlur = 3;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 
 // ✨ Launching worry sentences
 form.addEventListener('submit', (e) => {
